@@ -10,7 +10,7 @@ First, grab the dependencies:
 
 Build the applicaiton
 	
-	npm run build
+    npm run build
 
 Then run the app like so:
 

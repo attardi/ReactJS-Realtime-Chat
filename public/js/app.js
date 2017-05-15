@@ -195,7 +195,7 @@ var ChatApp = React.createClass({
 
 		users.push(name);
 		messages.push({
-			user: 'APLICATION BOT',
+			user: 'APPLICATION BOT',
 			text: name + ' Joined'
 		});
 		this.setState({ users: users, messages: messages });
@@ -210,7 +210,7 @@ var ChatApp = React.createClass({
 		var index = users.indexOf(name);
 		users.splice(index, 1);
 		messages.push({
-			user: 'APLICATION BOT',
+			user: 'APPLICATION BOT',
 			text: name + ' Left'
 		});
 		this.setState({ users: users, messages: messages });
@@ -226,7 +226,7 @@ var ChatApp = React.createClass({
 		var index = users.indexOf(oldName);
 		users.splice(index, 1, newName);
 		messages.push({
-			user: 'APLICATION BOT',
+			user: 'APPLICATION BOT',
 			text: 'Change Name : ' + oldName + ' ==> ' + newName
 		});
 		this.setState({ users: users, messages: messages });
@@ -289,6 +289,9 @@ var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -312,7 +315,9 @@ function drainQueue() {
         currentQueue = queue;
         queue = [];
         while (++queueIndex < len) {
-            currentQueue[queueIndex].run();
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
         }
         queueIndex = -1;
         len = queue.length;
@@ -364,7 +369,6 @@ process.binding = function (name) {
     throw new Error('process.binding is not supported');
 };
 
-// TODO(shtylman)
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
